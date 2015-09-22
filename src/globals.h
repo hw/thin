@@ -23,6 +23,17 @@
 #define PERSIST_KEY_SECOND_HAND 4
 #define NUM_SETTINGS            5
 
+#define PERSIST_KEY_COLOR_OFFSET          10
+#define PERSIST_KEY_HOUR_MARKERS_COLOR     0
+#define PERSIST_KEY_MINUTE_MARKERS_COLOR   1
+#define PERSIST_KEY_CHARGING_MARKERS_COLOR 2
+#define PERSIST_KEY_HANDS_COLOR            3
+#define PERSIST_KEY_TIPS_COLOR             4  
+#define PERSIST_KEY_SECOND_HAND_COLOR      5  
+#define PERSIST_KEY_SECOND_TIP_COLOR       6
+#define PERSIST_KEY_CALENDAR_DAY_COLOR     7  
+#define NUM_COLORS                         8  
+
 typedef struct {
   int days;
   int hours;

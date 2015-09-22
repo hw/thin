@@ -89,7 +89,19 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
     int thickness = isHourMarker ? THICKNESS : 1;    
         
     if (!isHourMarker &&  ( m < mmin || m > mmax )) continue;
-      
+
+
+        
+#ifdef PBL_COLOR    
+    GColor8 markerColor;    
+    if (isHourMarker) {
+      markerColor = GColorFromHEX(config_get_color(PERSIST_KEY_HOUR_MARKERS_COLOR));
+    }
+    else {
+      markerColor = GColorFromHEX(config_get_color(PERSIST_KEY_MINUTE_MARKERS_COLOR));
+    }
+#endif 
+    
     for(int y = 0; y < thickness; y++) {
       for(int x = 0; x < thickness; x++) {
         GPoint point = (GPoint) {
@@ -100,14 +112,14 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
 
         
 #ifdef PBL_COLOR
-        if(config_get(PERSIST_KEY_BATTERY)) {
+        if(config_get(PERSIST_KEY_BATTERY) && isHourMarker) {
           if(h < batt_hours) {
             if(plugged) {
               // Charging
-              graphics_context_set_stroke_color(ctx, GColorGreen);
+              graphics_context_set_stroke_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_CHARGING_MARKERS_COLOR)));
             } else {
               // Discharging at this level
-              graphics_context_set_stroke_color(ctx, GColorWhite);
+              graphics_context_set_stroke_color(ctx, markerColor);
             }
           } else {
             // Empty segment
@@ -115,7 +127,7 @@ static void bg_update_proc(Layer *layer, GContext *ctx) {
           }
         } else {
           // No battery indicator
-          graphics_context_set_stroke_color(ctx, GColorWhite);
+          graphics_context_set_stroke_color(ctx, markerColor);
         }
 #else
         if(config_get(PERSIST_KEY_BATTERY)) {
@@ -190,7 +202,7 @@ static void draw_proc(Layer *layer, GContext *ctx) {
 
   // Draw hands
 #ifdef PBL_COLOR
-  graphics_context_set_stroke_color(ctx, GColorLightGray);
+  graphics_context_set_stroke_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_HANDS_COLOR)));
 #elif PBL_BW 
   graphics_context_set_stroke_color(ctx, GColorWhite);
 #endif
@@ -200,7 +212,9 @@ static void draw_proc(Layer *layer, GContext *ctx) {
       graphics_draw_line(ctx, GPoint(center.x + x, center.y + y), GPoint(hour_hand_short.x + x, hour_hand_short.y + y));
     }
   }
-  graphics_context_set_stroke_color(ctx, GColorWhite);
+#ifdef PBL_COLOR  
+  graphics_context_set_stroke_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_TIPS_COLOR)));
+#endif
   for(int y = 0; y < THICKNESS; y++) {
     for(int x = 0; x < THICKNESS; x++) {
       graphics_draw_line(ctx, GPoint(minute_hand_short.x + x, minute_hand_short.y + y), GPoint(minute_hand_long.x + x, minute_hand_long.y + y));
@@ -214,7 +228,7 @@ static void draw_proc(Layer *layer, GContext *ctx) {
     for(int y = 0; y < THICKNESS - 1; y++) {
       for(int x = 0; x < THICKNESS - 1; x++) {
 #ifdef PBL_COLOR
-        graphics_context_set_stroke_color(ctx, GColorDarkCandyAppleRed);
+        graphics_context_set_stroke_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_SECOND_HAND_COLOR)));
 #elif PBL_BW
         graphics_context_set_stroke_color(ctx, GColorWhite);
 #endif
@@ -222,7 +236,7 @@ static void draw_proc(Layer *layer, GContext *ctx) {
 
         // Draw second hand tip
 #ifdef PBL_COLOR
-        graphics_context_set_stroke_color(ctx, GColorChromeYellow);
+        graphics_context_set_stroke_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_SECOND_TIP_COLOR)));
 #elif PBL_BW
         graphics_context_set_stroke_color(ctx, GColorWhite);
 #endif
@@ -232,7 +246,11 @@ static void draw_proc(Layer *layer, GContext *ctx) {
   }
 
   // Center
-  graphics_context_set_fill_color(ctx, GColorWhite);
+#ifdef PBL_COLOR  
+  graphics_context_set_fill_color(ctx, GColorFromHEX(config_get_color(PERSIST_KEY_TIPS_COLOR)));
+#elif PBL_BW
+  graphics_context_set_fill_color(ctx, GColorWhite );
+#endif  
   graphics_fill_circle(ctx, GPoint(center.x + 1, center.y + 1), 4);
 
   // Draw black if disconnected
@@ -274,7 +292,7 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(s_day_in_month_layer, GTextAlignmentCenter);
   text_layer_set_font(s_day_in_month_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 #ifdef PBL_COLOR
-  text_layer_set_text_color(s_day_in_month_layer, GColorChromeYellow);
+  text_layer_set_text_color(s_day_in_month_layer, GColorFromHEX(config_get_color(PERSIST_KEY_CALENDAR_DAY_COLOR)));
 #elif PBL_BW
   text_layer_set_text_color(s_day_in_month_layer, GColorWhite);
 #endif

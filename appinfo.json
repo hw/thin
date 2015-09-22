@@ -2,9 +2,17 @@
     "appKeys": {
         "PERSIST_KEY_BATTERY": 3,
         "PERSIST_KEY_BT": 2,
+        "PERSIST_KEY_CALENDAR_DAY_COLOR": 17,
+        "PERSIST_KEY_CHARGING_COLOR": 12,
         "PERSIST_KEY_DATE": 0,
         "PERSIST_KEY_DAY": 1,
-        "PERSIST_KEY_SECOND_HAND": 4
+        "PERSIST_KEY_HANDS_COLOR": 13,
+        "PERSIST_KEY_HOUR_MARKERS_COLOR": 10,
+        "PERSIST_KEY_MINUTE_MARKERS_COLOR": 11,
+        "PERSIST_KEY_SECOND_HAND": 4,
+        "PERSIST_KEY_SECOND_HAND_COLOR": 15,
+        "PERSIST_KEY_SECOND_TIP_COLOR": 16,
+        "PERSIST_KEY_TIPS_COLOR": 14
     },
     "capabilities": [
         "configurable"
@@ -13,7 +21,14 @@
     "longName": "Thin Markers",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/MenuImage_BW.png",
+                "menuIcon": true,
+                "name": "MENU_IMAGE",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "Thin Markers",
@@ -22,7 +37,7 @@
         "basalt"
     ],
     "uuid": "ffd00ecb-81e8-4d9b-9eee-4641bb1c8ff9",
-    "versionLabel": "0.1",
+    "versionLabel": "0.2",
     "watchapp": {
         "watchface": true
     }
